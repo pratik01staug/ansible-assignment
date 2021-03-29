@@ -1,3 +1,4 @@
+# Use instance-inv.ini for executing this play
 - name: Login to VM and pring hostname
   hosts: all
   gather_facts: yes
