@@ -1,3 +1,4 @@
+# use inv.ini as inventory file to execute this play
 - name: Attempting to launch an openstack instance
   hosts: localhost
   connection: local
