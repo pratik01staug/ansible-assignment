@@ -1,0 +1,8 @@
+- name: Login to VM and pring hostname
+  hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: print hostname in stdout
+      debug:
+        msg: "{{ hostvars[inventory_hostname]['ansible_hostname'] }}"

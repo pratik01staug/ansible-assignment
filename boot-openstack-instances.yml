@@ -1,0 +1,77 @@
+- name: Attempting to launch an openstack instance
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: launch vm1 on openstack cloud with key
+    os_server:
+      state: present
+      auth:
+        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+        username: "{{ lookup('env','OS_USERNAME') }}"
+        password: "{{ lookup('env','OS_PASSWORD') }}"
+        project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
+      name: openstack-vm1
+      image: f243533f-cb11-47a8-b342-ce4f874aef8d
+      key_name: ansible_key
+      availability_zone: "nova:compute-1-4456.domain.tld"
+      flavor: db784ee1-9977-4099-8733-466dd0024759
+      nics:
+        - net-id: f2de9935-94d6-40d9-8ad3-e74c247efd17
+      auto_ip: no
+    tags:
+      - create
+
+  - name: launch vm2 on openstack cloud with password
+    os_server:
+      state: present
+      auth:
+        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+        username: "{{ lookup('env','OS_USERNAME') }}"
+        password: "{{ lookup('env','OS_PASSWORD') }}"
+        project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
+      name: openstack-vm2
+      image: f243533f-cb11-47a8-b342-ce4f874aef8d
+      availability_zone: "nova:compute-1-4446.domain.tld"
+      flavor: db784ee1-9977-4099-8733-466dd0024759
+      nics:
+        - net-id: f2de9935-94d6-40d9-8ad3-e74c247efd17
+      auto_ip: no
+    tags:
+      - create
+
+  - name: launch vm3 on openstack cloud with key and password
+    os_server:
+      state: present
+      auth:
+        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+        username: "{{ lookup('env','OS_USERNAME') }}"
+        password: "{{ lookup('env','OS_PASSWORD') }}"
+        project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
+      name: openstack-vm3
+      image: f243533f-cb11-47a8-b342-ce4f874aef8d
+      key_name: ansible_key
+      availability_zone: "nova:compute-1-4451.domain.tld"
+      flavor: db784ee1-9977-4099-8733-466dd0024759
+      nics:
+        - net-id: f2de9935-94d6-40d9-8ad3-e74c247efd17
+      auto_ip: no
+    tags:
+      - create
+
+  - name: delete vm from openstack cloud
+    os_server:
+      state: absent
+      auth:
+        auth_url: "{{ lookup('env','OS_AUTH_URL') }}"
+        username: "{{ lookup('env','OS_USERNAME') }}"
+        password: "{{ lookup('env','OS_PASSWORD') }}"
+        project_name: "{{ lookup('env','OS_TENANT_NAME') }}"
+      name: "{{ item }}"
+    with_items:
+       - openstack-vm1
+       - openstack-vm2
+       - openstack-vm3
+    tags:
+      - delete
